@@ -10,10 +10,10 @@ import com.example.weathertestapp.remote.WeatherApi
 class WeatherRepositoryImpl(private val api: WeatherApi): WeatherRepository {
 
     override suspend fun getCurrentWeather(city: String): CurrentWeatherDomain {
-        return api.getCurrentWeather("Minsk", API_KEY).toDomainModel()
+        return api.getCurrentWeather(city, API_KEY).toDomainModel()
     }
 
-    override suspend fun getForecast(): ForecastRemote {
-        return api.getForecast("Minsk", API_KEY)
+    override suspend fun getForecast(city: String): ForecastRemote {
+        return api.getForecast(city, API_KEY)
     }
 }

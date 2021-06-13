@@ -14,10 +14,14 @@ class CurrentWeatherViewModel(private val repository: WeatherRepository): ViewMo
     private val _weather = MutableLiveData<CurrentWeatherPresentation>()
     val weather: LiveData<CurrentWeatherPresentation> = _weather
 
+    var city = MutableLiveData<String>()
+
     fun getCurrentWeather() {
-        viewModelScope.launch {
-            val weather = repository.getCurrentWeather("Minsk")
-            _weather.value = weather.toPresentationModel()
+        city.observeForever {
+            viewModelScope.launch {
+                val weather = repository.getCurrentWeather(it)
+                _weather.value = weather.toPresentationModel()
+            }
         }
     }
 

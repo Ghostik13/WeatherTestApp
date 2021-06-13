@@ -1,14 +1,15 @@
 package com.example.weathertestapp.ui.presentation.mapper
 
 import com.example.weathertestapp.domain.model.CurrentWeatherDomain
+import com.example.weathertestapp.toWindDirection
 import com.example.weathertestapp.ui.presentation.model.CurrentWeatherPresentation
 
 fun CurrentWeatherDomain.toPresentationModel() = CurrentWeatherPresentation(
     temp = (temp-273.15).toInt(),
     humidity = humidity,
-//    rain = rain,
+    rain = rain,
     pressure = pressure,
-    windSpeed = windSpeed,
-    windDirection = windDirection,
+    windSpeed = ((windSpeed*3600)/1000).toInt(),
+    windDirection = windDirection.toWindDirection(),
     description = description
 )

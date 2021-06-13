@@ -5,5 +5,5 @@ import com.example.weathertestapp.domain.model.CurrentWeatherDomain
 
 interface WeatherRepository {
     suspend fun getCurrentWeather(city: String): CurrentWeatherDomain
-    suspend fun getForecast(): ForecastRemote
+    suspend fun getForecast(city: String): ForecastRemote
 }
