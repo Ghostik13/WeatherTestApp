@@ -6,7 +6,7 @@ import com.example.weathertestapp.data.WeatherRepositoryImpl
 import com.example.weathertestapp.domain.WeatherRepository
 import com.example.weathertestapp.remote.WeatherApi
 import com.example.weathertestapp.ui.presentation.currentWeatherView.CurrentWeatherViewModel
-import com.example.weathertestapp.ui.presentation.weekWeatherView.WeekWeatherViewModel
+import com.example.weathertestapp.ui.presentation.forecastView.ForecastViewModel
 import okhttp3.Cache
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -18,7 +18,7 @@ val currentViewModelModule = module {
 }
 
 val weekViewModelModule = module {
-    viewModel { WeekWeatherViewModel(get()) }
+    viewModel { ForecastViewModel(get()) }
 }
 
 val repository = module {

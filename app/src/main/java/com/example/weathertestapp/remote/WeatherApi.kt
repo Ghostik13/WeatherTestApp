@@ -1,7 +1,7 @@
 package com.example.weathertestapp.remote
 
-import com.example.weathertestapp.data.model.CurrentWeatherResponse
-import com.example.weathertestapp.data.model.ForecastResponse
+import com.example.weathertestapp.data.model.CurrentWeatherRemote
+import com.example.weathertestapp.data.model.ForecastRemote
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,11 +11,11 @@ interface WeatherApi {
     suspend fun getCurrentWeather(
         @Query("q") city: String,
         @Query("appid") apiKey: String
-    ): CurrentWeatherResponse
+    ): CurrentWeatherRemote
 
     @GET("forecast")
     suspend fun getForecast(
         @Query("q") city: String,
         @Query("appid") apiKey: String
-    ): ForecastResponse
+    ): ForecastRemote
 }

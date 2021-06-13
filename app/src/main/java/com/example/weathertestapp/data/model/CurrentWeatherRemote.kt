@@ -1,6 +1,6 @@
 package com.example.weathertestapp.data.model
 
-data class CurrentWeatherResponse(
+data class CurrentWeatherRemote(
     val base: String,
     val clouds: CurrentClouds,
     val cod: Int,
@@ -13,7 +13,8 @@ data class CurrentWeatherResponse(
     val timezone: Int,
     val visibility: Int,
     val weather: List<CurrentWeather>,
-    val wind: CurrentWind
+    val wind: CurrentWind,
+    val rain: CurrentRain
 )
 
 data class CurrentMain(
@@ -25,6 +26,10 @@ data class CurrentMain(
     val temp: Double,
     val temp_max: Double,
     val temp_min: Double
+)
+
+data class CurrentRain(
+    val high: Double
 )
 
 data class CurrentSys(

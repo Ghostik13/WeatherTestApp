@@ -1,4 +1,4 @@
-package com.example.weathertestapp.ui.presentation.weekWeatherView
+package com.example.weathertestapp.ui.presentation.forecastView
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import com.example.weathertestapp.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class WeekWeatherFragment : Fragment() {
+class ForecastFragment : Fragment() {
 
-    private val viewModel: WeekWeatherViewModel by viewModel()
+    private val viewModel: ForecastViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
