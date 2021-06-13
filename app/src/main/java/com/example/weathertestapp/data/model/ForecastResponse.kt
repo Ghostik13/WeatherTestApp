@@ -1,6 +1,6 @@
 package com.example.weathertestapp.data.model
 
-data class WeekWeatherResponse(
+data class ForecastResponse(
     val city: City,
     val cnt: Int,
     val cod: String,
