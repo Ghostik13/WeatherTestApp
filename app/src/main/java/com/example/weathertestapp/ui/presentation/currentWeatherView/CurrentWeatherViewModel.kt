@@ -7,20 +7,24 @@ import androidx.lifecycle.viewModelScope
 import com.example.weathertestapp.domain.WeatherRepository
 import com.example.weathertestapp.ui.presentation.mapper.toPresentationModel
 import com.example.weathertestapp.ui.presentation.model.CurrentWeatherPresentation
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class CurrentWeatherViewModel(private val repository: WeatherRepository): ViewModel() {
+class CurrentWeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
 
     private val _weather = MutableLiveData<CurrentWeatherPresentation>()
     val weather: LiveData<CurrentWeatherPresentation> = _weather
 
     var city = MutableLiveData<String>()
+    var loading: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
 
     fun getCurrentWeather() {
         city.observeForever {
-            viewModelScope.launch {
-                val weather = repository.getCurrentWeather(it)
-                _weather.value = weather.toPresentationModel()
+            runBlocking {
+                val weather = async { repository.getCurrentWeather(it) }
+                _weather.postValue(weather.await().toPresentationModel())
+                loading.value = true
             }
         }
     }

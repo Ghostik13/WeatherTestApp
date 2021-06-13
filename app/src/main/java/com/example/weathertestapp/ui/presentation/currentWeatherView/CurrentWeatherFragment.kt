@@ -103,6 +103,15 @@ class CurrentWeatherFragment : Fragment(), LocationListener {
     }
 
     private fun initWeather(view: FragmentCurrentWeatherBinding) {
+        viewModel.loading.observe(viewLifecycleOwner, {
+            if (it == false) {
+                view.pb.visibility = View.VISIBLE
+                view.verticalLine.visibility = View.INVISIBLE
+            } else {
+                view.pb.visibility = View.GONE
+                view.verticalLine.visibility = View.VISIBLE
+            }
+        })
         viewModel.getCurrentWeather()
         viewModel.weather.observe(viewLifecycleOwner, {
             view.tvTemp.text = getString(R.string.celcius, it.temp.toString())
