@@ -14,7 +14,7 @@ data class CurrentWeatherRemote(
     val visibility: Int,
     val weather: List<CurrentWeather>,
     val wind: CurrentWind,
-    val rain: CurrentRain
+//    val rain: CurrentRain
 )
 
 data class CurrentMain(

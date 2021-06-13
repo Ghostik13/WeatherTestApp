@@ -16,7 +16,7 @@ class ForecastFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_week_weather, container, false)
+        val view = inflater.inflate(R.layout.fragment_forecast, container, false)
         return view
     }
 

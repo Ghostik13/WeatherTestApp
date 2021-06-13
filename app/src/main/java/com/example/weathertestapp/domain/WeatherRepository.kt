@@ -1,9 +1,9 @@
 package com.example.weathertestapp.domain
 
-import com.example.weathertestapp.data.model.CurrentWeatherRemote
 import com.example.weathertestapp.data.model.ForecastRemote
+import com.example.weathertestapp.domain.model.CurrentWeatherDomain
 
 interface WeatherRepository {
-    suspend fun getCurrentWeather(city: String): CurrentWeatherRemote
+    suspend fun getCurrentWeather(city: String): CurrentWeatherDomain
     suspend fun getForecast(): ForecastRemote
 }

@@ -6,7 +6,7 @@ data class CurrentWeatherDomain(
     val city: String,
     val temp: Double,
     val humidity: Int,
-    val rain: Double,
+//    val rain: Double,
     val pressure: Int,
     val windSpeed: Double,
     val windDirection: Int,
