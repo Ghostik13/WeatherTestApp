@@ -1,7 +1,6 @@
 package com.example.weathertestapp.ui.presentation.currentWeatherView
 
 import android.Manifest
-import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,11 +12,8 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.weathertestapp.Constants
-import com.example.weathertestapp.MainActivity
-import com.example.weathertestapp.R
+import com.example.weathertestapp.*
 import com.example.weathertestapp.databinding.FragmentCurrentWeatherBinding
-import com.example.weathertestapp.firstToUpperCase
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -95,7 +91,7 @@ class CurrentWeatherFragment : Fragment(), LocationListener {
     private fun initShare(view: FragmentCurrentWeatherBinding) {
         view.tvShare.setOnClickListener {
             val sendIntent = Intent(Intent.ACTION_SEND)
-            sendIntent.putExtra(Intent.EXTRA_TEXT, binding.tvTemp.text.toString())
+            sendIntent.putExtra("Intent.EXTRA_TEXT", binding.tvTemp.text.toString())
             sendIntent.putExtra(Intent.EXTRA_TEXT, binding.tvDesc.text.toString())
             sendIntent.type = "text/plain"
             startActivity(sendIntent)
@@ -106,10 +102,8 @@ class CurrentWeatherFragment : Fragment(), LocationListener {
         viewModel.loading.observe(viewLifecycleOwner, {
             if (it == false) {
                 view.pb.visibility = View.VISIBLE
-                view.verticalLine.visibility = View.INVISIBLE
             } else {
                 view.pb.visibility = View.GONE
-                view.verticalLine.visibility = View.VISIBLE
             }
         })
         viewModel.getCurrentWeather()
@@ -125,15 +119,17 @@ class CurrentWeatherFragment : Fragment(), LocationListener {
             view.tvPressure.text = getString(R.string.pressure, it.pressure.toString())
             view.tvSpeed.text = getString(R.string.speed, it.windSpeed.toString())
             view.tvDir.text = it.windDirection
+            view.tvCity.text = it.city
         })
     }
 
     override fun onLocationChanged(location: Location) {
         val addresses: List<Address>
-        val geoCoder = Geocoder(requireContext(), Locale.getDefault())
-        addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
-        val city = addresses[0].locality.toString()
-        binding.tvCity.text = city
-        viewModel.city.value = city
+        if(isAdded){
+            val geoCoder = Geocoder(requireContext(), Locale.getDefault())
+            addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
+            val city = addresses[0].locality.toString()
+            viewModel.city.value = city
+        }
     }
 }

@@ -1,13 +1,17 @@
 package com.example.weathertestapp.di
 
 import android.app.Application
+import androidx.room.Room
 import com.example.weathertestapp.Constants
+import com.example.weathertestapp.data.WeatherDao
+import com.example.weathertestapp.data.WeatherDatabase
 import com.example.weathertestapp.data.WeatherRepositoryImpl
 import com.example.weathertestapp.domain.WeatherRepository
 import com.example.weathertestapp.remote.WeatherApi
 import com.example.weathertestapp.ui.presentation.currentWeatherView.CurrentWeatherViewModel
 import com.example.weathertestapp.ui.presentation.forecastView.ForecastViewModel
 import okhttp3.Cache
+import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -22,10 +26,10 @@ val weekViewModelModule = module {
 }
 
 val repository = module {
-    fun provideRepository(api: WeatherApi): WeatherRepositoryImpl {
-        return WeatherRepositoryImpl(api)
+    fun provideRepository(api: WeatherApi, dao: WeatherDao): WeatherRepositoryImpl {
+        return WeatherRepositoryImpl(api, dao)
     }
-    single<WeatherRepository> { provideRepository(get()) }
+    single<WeatherRepository> { provideRepository(get(), get()) }
 }
 
 val apiModule = module {
@@ -51,4 +55,22 @@ val netModule = module {
 
     single { provideRetrofit() }
     single { provideCache(get()) }
+}
+
+val databaseModule = module {
+
+    fun provideDatabase(application: Application): WeatherDatabase {
+        return Room.databaseBuilder(application, WeatherDatabase::class.java, "weather")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    fun provideCountriesDao(database: WeatherDatabase): WeatherDao {
+        return database.weatherDao
+    }
+
+    single { provideDatabase(androidApplication()) }
+    single { provideCountriesDao(get()) }
+
+
 }

@@ -32,6 +32,8 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+
 }
 
 dependencies {
@@ -61,9 +63,16 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.5.0"
 
     //Koin
-    implementation "org.koin:koin-android:2.2.1"
-    implementation 'org.koin:koin-androidx-viewmodel:2.2.1'
-    implementation 'org.koin:koin-androidx-scope:2.2.1'
+    implementation "org.koin:koin-android:2.2.2"
+    implementation 'org.koin:koin-androidx-viewmodel:2.2.2'
+    implementation 'org.koin:koin-androidx-scope:2.2.2'
 
+    //Multidex
     implementation "androidx.multidex:multidex:2.0.1"
+
+    //Room
+    implementation "androidx.room:room-runtime:2.3.0"
+    kapt "androidx.room:room-compiler:2.3.0"
+    implementation "androidx.room:room-ktx:2.3.0"
+    androidTestImplementation "androidx.room:room-testing:2.3.0"
 }

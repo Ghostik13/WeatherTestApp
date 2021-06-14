@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.weathertestapp.domain.WeatherRepository
 import com.example.weathertestapp.ui.presentation.mapper.toPresentationModel
 import com.example.weathertestapp.ui.presentation.model.CurrentWeatherPresentation
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 class CurrentWeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
 
@@ -20,6 +18,12 @@ class CurrentWeatherViewModel(private val repository: WeatherRepository) : ViewM
     var loading: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
 
     fun getCurrentWeather() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val weatherDb = repository.getCurrentWeather()
+            withContext(Dispatchers.Main) {
+                _weather.value = weatherDb.toPresentationModel()
+            }
+        }
         city.observeForever {
             runBlocking {
                 val weather = async { repository.getCurrentWeather(it) }
@@ -28,5 +32,4 @@ class CurrentWeatherViewModel(private val repository: WeatherRepository) : ViewM
             }
         }
     }
-
 }

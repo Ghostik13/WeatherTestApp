@@ -22,7 +22,8 @@ class WeatherApp : Application() {
                     weekViewModelModule,
                     repository,
                     netModule,
-                    apiModule
+                    apiModule,
+                    databaseModule
                 )
             )
         }
