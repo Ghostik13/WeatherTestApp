@@ -16,5 +16,5 @@ data class CurrentWeatherDB(
     val windSpeed: Double,
     val windDirection: Int,
     val description: String,
-    val time: String
+    val icon: String
 )

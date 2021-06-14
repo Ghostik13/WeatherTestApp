@@ -21,7 +21,7 @@ class WeatherRepositoryImpl(private val api: WeatherApi, private val weatherDao:
         return api.getForecast(city, API_KEY)
     }
 
-    override fun getCurrentWeather(): CurrentWeatherDB {
+    override fun getCurrentWeather(): CurrentWeatherDB? {
         return weatherDao.getCurrentWeather()
     }
 }

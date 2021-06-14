@@ -3,7 +3,6 @@ package com.example.weathertestapp.data.mapper
 import com.example.weathertestapp.data.model.CurrentWeatherDB
 import com.example.weathertestapp.data.model.CurrentWeatherRemote
 import com.example.weathertestapp.domain.model.CurrentWeatherDomain
-import java.text.SimpleDateFormat
 import java.util.*
 
 fun CurrentWeatherRemote.toDomainModel() = CurrentWeatherDomain(
@@ -16,7 +15,8 @@ fun CurrentWeatherRemote.toDomainModel() = CurrentWeatherDomain(
     pressure = main.pressure,
     windSpeed = wind.speed,
     windDirection = wind.deg,
-    description = weather[0].description
+    description = weather[0].description,
+    icon = weather[0].icon
 )
 
 fun CurrentWeatherRemote.toDbModel() = CurrentWeatherDB(
@@ -30,5 +30,5 @@ fun CurrentWeatherRemote.toDbModel() = CurrentWeatherDB(
     windSpeed = wind.speed,
     windDirection = wind.deg,
     description = weather[0].description,
-    time = Calendar.getInstance().time.toString()
+    icon = weather[0].icon
 )

@@ -13,6 +13,6 @@ interface WeatherDao {
     suspend fun updateCurrentWeather(currentWeatherDB: CurrentWeatherDB)
 
     @Query("SELECT * FROM current_weather_table")
-    fun getCurrentWeather(): CurrentWeatherDB
+    fun getCurrentWeather(): CurrentWeatherDB?
 
 }

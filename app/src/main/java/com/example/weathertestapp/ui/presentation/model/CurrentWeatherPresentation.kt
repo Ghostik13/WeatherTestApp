@@ -8,5 +8,6 @@ data class CurrentWeatherPresentation(
     val pressure: Int,
     val windSpeed: Int,
     val windDirection: String,
-    val description: String
+    val description: String,
+    val icon: Int
 )

@@ -10,5 +10,6 @@ data class CurrentWeatherDomain(
     val pressure: Int,
     val windSpeed: Double,
     val windDirection: Int,
-    val description: String
+    val description: String,
+    val icon: String
 )

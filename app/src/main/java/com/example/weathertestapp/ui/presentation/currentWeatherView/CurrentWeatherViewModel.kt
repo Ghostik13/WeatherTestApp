@@ -14,16 +14,10 @@ class CurrentWeatherViewModel(private val repository: WeatherRepository) : ViewM
     private val _weather = MutableLiveData<CurrentWeatherPresentation>()
     val weather: LiveData<CurrentWeatherPresentation> = _weather
 
-    var city = MutableLiveData<String>()
-    var loading: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val city = MutableLiveData<String>()
+    val loading: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
 
     fun getCurrentWeather() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val weatherDb = repository.getCurrentWeather()
-            withContext(Dispatchers.Main) {
-                _weather.value = weatherDb.toPresentationModel()
-            }
-        }
         city.observeForever {
             runBlocking {
                 val weather = async { repository.getCurrentWeather(it) }
@@ -31,5 +25,11 @@ class CurrentWeatherViewModel(private val repository: WeatherRepository) : ViewM
                 loading.value = true
             }
         }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val weatherDb = repository.getCurrentWeather()
+//            withContext(Dispatchers.Main) {
+//                _weather.value = weatherDb?.toPresentationModel()
+//            }
+//        }
     }
 }
