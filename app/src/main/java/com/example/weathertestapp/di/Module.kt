@@ -41,7 +41,7 @@ val apiModule = module {
 }
 
 val netModule = module {
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofit(): Retrofit? {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

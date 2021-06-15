@@ -26,37 +26,37 @@ class CurrentWeatherFragment : Fragment(), LocationListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCurrentWeatherBinding.inflate(inflater, container, false)
-        getLocation()
         val view = binding.root
         initWeather(binding)
         initShare(binding)
+        getLocation()
         return view
     }
 
     private lateinit var locationManager: LocationManager
 
     private fun getLocation() {
-       try {
-           locationManager = requireContext().getSystemService(LOCATION_SERVICE) as LocationManager
-           locationManager.requestLocationUpdates(
-               LocationManager.GPS_PROVIDER,
-               5000,
-               5f,
-               this
-           )
-           locationManager.requestLocationUpdates(
-               LocationManager.NETWORK_PROVIDER,
-               5000,
-               5f,
-               this
-           )
-       } catch (e: SecurityException) {
-           Log.d("WeatherApp Location Permission", "Denied")
-       }
+        try {
+            locationManager = requireContext().getSystemService(LOCATION_SERVICE) as LocationManager
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                5000,
+                5f,
+                this
+            )
+            locationManager.requestLocationUpdates(
+                LocationManager.NETWORK_PROVIDER,
+                5000,
+                5f,
+                this
+            )
+        } catch (e: SecurityException) {
+            Log.d("SECURITY", "DENIED")
+        }
     }
 
     private fun initShare(view: FragmentCurrentWeatherBinding) {
-        view.tvShare.setOnClickListener {
+        view.shareBtn.setOnClickListener {
             val sendIntent = Intent(Intent.ACTION_SEND)
             sendIntent.putExtra(Intent.EXTRA_TEXT, binding.tvTemp.text.toString())
             sendIntent.putExtra(Intent.EXTRA_TEXT, binding.tvDesc.text.toString())
@@ -66,6 +66,7 @@ class CurrentWeatherFragment : Fragment(), LocationListener {
     }
 
     private fun initWeather(view: FragmentCurrentWeatherBinding) {
+        viewModel.getCurrentWeather()
         viewModel.loading.observe(viewLifecycleOwner, {
             if (it == false) {
                 view.pb.visibility = View.VISIBLE
@@ -73,7 +74,6 @@ class CurrentWeatherFragment : Fragment(), LocationListener {
                 view.pb.visibility = View.GONE
             }
         })
-        viewModel.getCurrentWeather()
         viewModel.weather.observe(viewLifecycleOwner, {
             it?.let {
                 view.tvTemp.text = getString(R.string.celcius, it.temp.toString())
@@ -90,17 +90,17 @@ class CurrentWeatherFragment : Fragment(), LocationListener {
                 view.tvCity.text = it.city
                 view.ivWeather.setImageResource(it.icon)
             }
-
         })
     }
 
     override fun onLocationChanged(location: Location) {
-        val addresses: List<Address>
-        if(isAdded){
+        if (isAdded) {
+            val addresses: List<Address>
             val geoCoder = Geocoder(requireContext(), Locale.getDefault())
             addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
             val city = addresses[0].locality.toString()
             viewModel.city.value = city
         }
+
     }
 }

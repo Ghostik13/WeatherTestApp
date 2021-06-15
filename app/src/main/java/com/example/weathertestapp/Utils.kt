@@ -21,16 +21,16 @@ fun Int.toWindDirection(): String {
 }
 
 fun String.toWeatherIcon(): Int {
-    when (this) {
-        "01d", "01n" -> return R.drawable.ic_clear_sky
-        "02d", "02n" -> return R.drawable.ic_few_clouds
-        "03d", "03n" -> return R.drawable.ic_scattered_clouds
-        "04d", "04n" -> return R.drawable.ic_broken_clouds
-        "50d", "50n" -> return R.drawable.ic_mist
-        "10d", "10n" -> return R.drawable.ic_rain
-        "09d", "09n" -> return R.drawable.ic_shower_rain
-        "13d", "13n" -> return R.drawable.ic_snow
-        "11d", "11n" -> return R.drawable.ic_thunderstorm
+    return when (this) {
+        "01d", "01n" -> R.drawable.ic_clear_sky
+        "02d", "02n" -> R.drawable.ic_few_clouds
+        "03d", "03n" -> R.drawable.ic_scattered_clouds
+        "04d", "04n" -> R.drawable.ic_broken_clouds
+        "50d", "50n" -> R.drawable.ic_mist
+        "10d", "10n" -> R.drawable.ic_rain
+        "09d", "09n" -> R.drawable.ic_shower_rain
+        "13d", "13n" -> R.drawable.ic_snow
+        "11d", "11n" -> R.drawable.ic_thunderstorm
+        else -> R.drawable.ic_thunderstorm
     }
-    return R.drawable.ic_snow
 }

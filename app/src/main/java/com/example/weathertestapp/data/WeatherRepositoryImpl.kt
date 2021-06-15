@@ -9,7 +9,8 @@ import com.example.weathertestapp.domain.WeatherRepository
 import com.example.weathertestapp.domain.model.CurrentWeatherDomain
 import com.example.weathertestapp.remote.WeatherApi
 
-class WeatherRepositoryImpl(private val api: WeatherApi, private val weatherDao: WeatherDao): WeatherRepository {
+class WeatherRepositoryImpl(private val api: WeatherApi, private val weatherDao: WeatherDao) :
+    WeatherRepository {
 
     override suspend fun getCurrentWeather(city: String): CurrentWeatherDomain {
         val weatherDb = api.getCurrentWeather(city, API_KEY).toDbModel()

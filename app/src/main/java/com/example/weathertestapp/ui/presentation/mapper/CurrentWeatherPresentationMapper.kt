@@ -15,7 +15,7 @@ fun CurrentWeatherDomain.toPresentationModel() = CurrentWeatherPresentation(
     windSpeed = ((windSpeed*3600)/1000).toInt(),
     windDirection = windDirection.toWindDirection(),
     description = description,
-    icon = description.toWeatherIcon()
+    icon = icon.toWeatherIcon()
 )
 
 fun CurrentWeatherDB.toPresentationModel() = CurrentWeatherPresentation(
@@ -27,5 +27,5 @@ fun CurrentWeatherDB.toPresentationModel() = CurrentWeatherPresentation(
     windSpeed = ((windSpeed*3600)/1000).toInt(),
     windDirection = windDirection.toWindDirection(),
     description = description,
-    icon = description.toWeatherIcon()
+    icon = icon.toWeatherIcon()
 )
