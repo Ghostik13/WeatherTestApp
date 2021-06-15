@@ -8,8 +8,7 @@ import com.example.weathertestapp.data.WeatherDatabase
 import com.example.weathertestapp.data.WeatherRepositoryImpl
 import com.example.weathertestapp.domain.WeatherRepository
 import com.example.weathertestapp.remote.WeatherApi
-import com.example.weathertestapp.ui.presentation.currentWeatherView.CurrentWeatherViewModel
-import com.example.weathertestapp.ui.presentation.forecastView.ForecastViewModel
+import com.example.weathertestapp.ui.presentation.MainViewModel
 import okhttp3.Cache
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -18,11 +17,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val currentViewModelModule = module {
-    viewModel { CurrentWeatherViewModel(get()) }
-}
-
-val weekViewModelModule = module {
-    viewModel { ForecastViewModel(get()) }
+    viewModel { MainViewModel(get()) }
 }
 
 val repository = module {
@@ -33,11 +28,11 @@ val repository = module {
 }
 
 val apiModule = module {
-    fun provideGiphyApi(retrofit: Retrofit): WeatherApi {
+    fun provideWeatherApi(retrofit: Retrofit): WeatherApi {
         return retrofit.create(WeatherApi::class.java)
     }
 
-    single { provideGiphyApi(get()) }
+    single { provideWeatherApi(get()) }
 }
 
 val netModule = module {

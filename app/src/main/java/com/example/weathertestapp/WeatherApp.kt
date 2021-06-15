@@ -19,7 +19,6 @@ class WeatherApp : Application() {
             modules(
                 listOf(
                     currentViewModelModule,
-                    weekViewModelModule,
                     repository,
                     netModule,
                     apiModule,

@@ -1,17 +1,18 @@
-package com.example.weathertestapp.ui.presentation.currentWeatherView
+package com.example.weathertestapp.ui.presentation
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.weathertestapp.data.model.ForecastRemote
 import com.example.weathertestapp.domain.WeatherRepository
 import com.example.weathertestapp.ui.presentation.mapper.toPresentationModel
 import com.example.weathertestapp.ui.presentation.model.CurrentWeatherPresentation
 import kotlinx.coroutines.*
 import java.lang.Exception
 
-class CurrentWeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
+class MainViewModel(private val repository: WeatherRepository) : ViewModel() {
 
     private val _weather = MutableLiveData<CurrentWeatherPresentation>()
     val weather: LiveData<CurrentWeatherPresentation> = _weather
@@ -46,5 +47,16 @@ class CurrentWeatherViewModel(private val repository: WeatherRepository) : ViewM
                 weather.await()
             }
         }
+    }
+
+    private val _forecast: MutableLiveData<ForecastRemote> = MutableLiveData()
+    val forecast: LiveData<ForecastRemote> = _forecast
+
+    fun getForecast() {
+        viewModelScope.launch {
+            val forecastRemote = repository.getForecast("Minsk")
+            _forecast.value = forecastRemote
+        }
+
     }
 }

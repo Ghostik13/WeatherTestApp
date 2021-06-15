@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.weathertestapp.*
 import com.example.weathertestapp.databinding.FragmentCurrentWeatherBinding
+import com.example.weathertestapp.ui.presentation.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -19,7 +20,7 @@ class CurrentWeatherFragment : Fragment(), LocationListener {
     private var _binding: FragmentCurrentWeatherBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: CurrentWeatherViewModel by viewModel()
+    private val viewModel: MainViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -100,6 +101,7 @@ class CurrentWeatherFragment : Fragment(), LocationListener {
             addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
             val city = addresses[0].locality.toString()
             viewModel.city.value = city
+            cityName = city
         }
 
     }

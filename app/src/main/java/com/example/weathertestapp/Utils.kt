@@ -34,3 +34,5 @@ fun String.toWeatherIcon(): Int {
         else -> R.drawable.ic_thunderstorm
     }
 }
+
+var cityName: String = ""
