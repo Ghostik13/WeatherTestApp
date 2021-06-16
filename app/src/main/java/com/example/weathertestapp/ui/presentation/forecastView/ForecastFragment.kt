@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,18 +28,36 @@ class ForecastFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentForecastBinding.inflate(inflater, container, false)
-        recyclerView = binding.recyclerView
+        initForecast(binding)
+        return binding.root
+    }
+
+    private fun initForecast(view: FragmentForecastBinding) {
+        recyclerView = view.recyclerView
         val forecastAdapter = ForecastAdapter()
         recyclerView.adapter = forecastAdapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
-
-        viewModel.getForecast()
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.VERTICAL
+            )
+        )
+        viewModel.loading.observe(viewLifecycleOwner, {
+            if (it == false) {
+                view.pbForecast.visibility = View.VISIBLE
+            } else {
+                view.pbForecast.visibility = View.GONE
+            }
+        })
+        viewModel.getForecastDb()
+        viewModel.city.observe(viewLifecycleOwner, { city ->
+            viewModel.getForecast(city)
+            view.tvToday.text = city
+        })
         viewModel.forecast.observe(viewLifecycleOwner, { forecast ->
-            Log.d("FORECAST", forecast.toString())
             forecast.list.let { forecastAdapter.setData(it) }
         })
-        val view = binding.root
-        return view
     }
 }

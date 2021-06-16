@@ -8,11 +8,24 @@
     <fragment
         android:id="@+id/currentWeatherFragment"
         android:name="com.example.weathertestapp.ui.presentation.currentWeatherView.CurrentWeatherFragment"
-        android:label="fragment_current_weather"
-        tools:layout="@layout/fragment_current_weather" />
+        android:label="CurrentWeatherFragment"
+        tools:layout="@layout/fragment_current_weather">
+        <argument
+            android:name="CityName"
+            android:defaultValue="London"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_currentWeatherFragment_to_forecastFragment"
+            app:destination="@id/forecastFragment" />
+    </fragment>
     <fragment
         android:id="@+id/forecastFragment"
         android:name="com.example.weathertestapp.ui.presentation.forecastView.ForecastFragment"
         android:label="fragment_forecast"
-        tools:layout="@layout/fragment_forecast" />
+        tools:layout="@layout/fragment_forecast" >
+        <argument
+            android:name="City"
+            app:argType="string"
+            android:defaultValue="London" />
+    </fragment>
 </navigation>

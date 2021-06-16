@@ -1,10 +1,7 @@
 package com.example.weathertestapp.ui.presentation.currentWeatherView
 
-import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
-import android.location.*
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +10,8 @@ import com.example.weathertestapp.*
 import com.example.weathertestapp.databinding.FragmentCurrentWeatherBinding
 import com.example.weathertestapp.ui.presentation.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
-class CurrentWeatherFragment : Fragment(), LocationListener {
+class CurrentWeatherFragment : Fragment() {
 
     private var _binding: FragmentCurrentWeatherBinding? = null
     private val binding get() = _binding!!
@@ -30,50 +26,30 @@ class CurrentWeatherFragment : Fragment(), LocationListener {
         val view = binding.root
         initWeather(binding)
         initShare(binding)
-        getLocation()
         return view
-    }
-
-    private lateinit var locationManager: LocationManager
-
-    private fun getLocation() {
-        try {
-            locationManager = requireContext().getSystemService(LOCATION_SERVICE) as LocationManager
-            locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                5000,
-                5f,
-                this
-            )
-            locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER,
-                5000,
-                5f,
-                this
-            )
-        } catch (e: SecurityException) {
-            Log.d("SECURITY", "DENIED")
-        }
     }
 
     private fun initShare(view: FragmentCurrentWeatherBinding) {
         view.shareBtn.setOnClickListener {
             val sendIntent = Intent(Intent.ACTION_SEND)
-            sendIntent.putExtra(Intent.EXTRA_TEXT, binding.tvTemp.text.toString())
-            sendIntent.putExtra(Intent.EXTRA_TEXT, binding.tvDesc.text.toString())
+            sendIntent.putExtra("Temp", binding.tvTemp.text.toString())
+            sendIntent.putExtra("Descr", binding.tvDesc.text.toString())
             sendIntent.type = "text/plain"
             startActivity(sendIntent)
         }
     }
 
     private fun initWeather(view: FragmentCurrentWeatherBinding) {
-        viewModel.getCurrentWeather()
         viewModel.loading.observe(viewLifecycleOwner, {
             if (it == false) {
                 view.pb.visibility = View.VISIBLE
             } else {
                 view.pb.visibility = View.GONE
             }
+        })
+        viewModel.getCurrentWeatherDb()
+        viewModel.city.observe(viewLifecycleOwner, { city ->
+            viewModel.getCurrentWeather(city)
         })
         viewModel.weather.observe(viewLifecycleOwner, {
             it?.let {
@@ -92,17 +68,5 @@ class CurrentWeatherFragment : Fragment(), LocationListener {
                 view.ivWeather.setImageResource(it.icon)
             }
         })
-    }
-
-    override fun onLocationChanged(location: Location) {
-        if (isAdded) {
-            val addresses: List<Address>
-            val geoCoder = Geocoder(requireContext(), Locale.getDefault())
-            addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
-            val city = addresses[0].locality.toString()
-            viewModel.city.value = city
-            cityName = city
-        }
-
     }
 }

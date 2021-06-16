@@ -7,13 +7,23 @@
     android:id="@+id/constraintLayout"
     tools:context=".ui.presentation.forecastView.ForecastFragment">
 
+    <ProgressBar
+        android:id="@+id/pb_forecast"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:indeterminateTint="#D575C5E4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_today"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/poppins_medium"
-        android:text="@string/minsk"
         android:textSize="24sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"

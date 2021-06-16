@@ -1,9 +1,8 @@
-package com.example.weathertestapp.ui.presentation.model
+package com.example.weathertestapp.domain.model
 
 import com.example.weathertestapp.data.model.ModelDb
 
-data class ForecastPresentation(
+data class ForecastDomain(
     val city: String,
     val list: List<ModelDb>
 )
-
