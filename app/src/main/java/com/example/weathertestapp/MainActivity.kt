@@ -84,6 +84,11 @@ class MainActivity : AppCompatActivity(), LocationListener {
         viewModel.initCity(city)
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        this.finishAffinity()
+    }
+
 
     private fun checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(
