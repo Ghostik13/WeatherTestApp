@@ -19,6 +19,7 @@ class MainViewModel(private val repository: WeatherRepository) : ViewModel() {
     companion object {
         private val _city = MutableLiveData<String>()
     }
+
     val city: LiveData<String> = _city
 
     val loading: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
@@ -27,32 +28,26 @@ class MainViewModel(private val repository: WeatherRepository) : ViewModel() {
         _city.value = name
     }
 
-    fun getCurrentWeather(name: String) {
-        runBlocking {
-            val weather = async {
-                try {
-                    val w = repository.getCurrentWeather(name)
-                    _weather.value = w.toPresentationModel()
-                    loading.postValue(true)
-                } catch (e: Exception) {
-                    Log.d("INTERNET", "LOST")
-                    withContext(Dispatchers.IO) {
-                        _weather.postValue(
-                            repository.getCurrentWeather()?.toPresentationModel()
-                        )
-                        loading.postValue(false)
-                    }
-                }
+    suspend fun getCurrentWeather(name: String) {
+        try {
+            repository.getCurrentWeather(name).toPresentationModel().let {
+                _weather.postValue(it)
             }
-            weather.await()
+            withContext(Dispatchers.Main) {
+                loading.value = true
+            }
+        } catch (e: Exception) {
+            Log.d("INTERNET", "LOST")
+            _weather.postValue(
+                repository.getCurrentWeather()?.toPresentationModel()
+            )
         }
     }
 
     fun getCurrentWeatherDb() {
         viewModelScope.launch(Dispatchers.IO) {
-            val weatherDb = repository.getCurrentWeather()
-            withContext(Dispatchers.Main) {
-                _weather.value = weatherDb?.toPresentationModel()
+            repository.getCurrentWeather()?.toPresentationModel()?.let {
+                _weather.postValue(it)
             }
         }
     }
@@ -62,33 +57,26 @@ class MainViewModel(private val repository: WeatherRepository) : ViewModel() {
 
     fun getForecastDb() {
         viewModelScope.launch(Dispatchers.IO) {
-            val forecastDB = repository.getForecast()
-            withContext(Dispatchers.Main) {
-                if(forecastDB != null) {
-                    _forecast.value = forecastDB.toPresentation()
-                }
+            repository.getForecast()?.toPresentation()?.let {
+                _forecast.postValue(it)
             }
         }
     }
 
-    fun getForecast(name: String) {
-        runBlocking {
-            val forecast = async {
-                try {
-                    val f = repository.getForecast(name)
-                    _forecast.value = f.toPresentation()
-                    loading.postValue(true)
-                } catch (e: Exception) {
-                    Log.d("INTERNET", "LOST")
-                    withContext(Dispatchers.IO) {
-                        _forecast.postValue(
-                            repository.getForecast()?.toPresentation()
-                        )
-                        loading.postValue(false)
-                    }
-                }
+    suspend fun getForecast(name: String) {
+        try {
+            repository.getForecast(name).toPresentation().let {
+                _forecast.postValue(it)
             }
-            forecast.await()
+            withContext(Dispatchers.Main) {
+                loading.value = true
+            }
+        } catch (e: Exception) {
+            Log.d("INTERNET", "LOST")
+            _forecast.postValue(
+                repository.getForecast()?.toPresentation()
+            )
         }
     }
 }
+

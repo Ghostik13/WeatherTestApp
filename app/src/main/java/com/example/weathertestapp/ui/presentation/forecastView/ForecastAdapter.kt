@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weathertestapp.R
+import com.example.weathertestapp.*
 import com.example.weathertestapp.data.model.Model
 import com.example.weathertestapp.data.model.ModelDb
 import com.example.weathertestapp.databinding.ItemHolderBinding
-import com.example.weathertestapp.firstToUpperCase
-import com.example.weathertestapp.toWeatherIcon
 
 class ForecastAdapter :
     RecyclerView.Adapter<ForecastAdapter.ForecastViewHolder>() {
@@ -24,14 +22,13 @@ class ForecastAdapter :
         return ForecastViewHolder(binding)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
         val currentForecast = forecastList[position]
         with(holder.binding) {
             ivIcon.setImageResource(currentForecast.icon.toWeatherIcon())
-            tvTime.text = currentForecast.dt_txt.substring(11, 16)
+            tvTime.text = currentForecast.dt_txt.toTime()
             tvDescr.text = currentForecast.description.firstToUpperCase()
-            tvTempr.text = (currentForecast.temp - 273.15).toInt().toString() + "°С"
+            tvTempr.text = currentForecast.temp.toCelsius()
         }
         if (position == 0) {
             holder.binding.viewHolder.setBackgroundResource(R.drawable.holder_borders)

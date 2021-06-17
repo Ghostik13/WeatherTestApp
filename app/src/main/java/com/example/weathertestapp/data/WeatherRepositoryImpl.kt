@@ -1,5 +1,6 @@
 package com.example.weathertestapp.data
 
+import android.util.Log
 import com.example.weathertestapp.Constants.Companion.API_KEY
 import com.example.weathertestapp.data.mapper.toDbModel
 import com.example.weathertestapp.data.mapper.toDomain
@@ -11,6 +12,7 @@ import com.example.weathertestapp.domain.WeatherRepository
 import com.example.weathertestapp.domain.model.CurrentWeatherDomain
 import com.example.weathertestapp.domain.model.ForecastDomain
 import com.example.weathertestapp.remote.WeatherApi
+import java.lang.NullPointerException
 
 class WeatherRepositoryImpl(private val api: WeatherApi, private val weatherDao: WeatherDao) :
     WeatherRepository {

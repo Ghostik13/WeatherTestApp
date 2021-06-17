@@ -35,4 +35,14 @@ fun String.toWeatherIcon(): Int {
     }
 }
 
-var cityName: String = ""
+fun Double.toCelsius(): String {
+    return (this - 273.15).toInt().toString() + "°С"
+}
+
+fun String.toTime(): String {
+    return this.substring(11, 16)
+}
+
+fun Double.toIntSpeed(): String {
+    return ((this*3600)/1000).toInt().toString() + " km/h"
+}

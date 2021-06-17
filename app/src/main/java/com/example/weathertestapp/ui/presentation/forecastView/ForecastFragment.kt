@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weathertestapp.databinding.FragmentForecastBinding
 import com.example.weathertestapp.ui.presentation.MainViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ForecastFragment : Fragment() {
@@ -53,11 +55,13 @@ class ForecastFragment : Fragment() {
         })
         viewModel.getForecastDb()
         viewModel.city.observe(viewLifecycleOwner, { city ->
-            viewModel.getForecast(city)
+            GlobalScope.launch {
+                viewModel.getForecast(city)
+            }
             view.tvToday.text = city
         })
         viewModel.forecast.observe(viewLifecycleOwner, { forecast ->
-            forecast.list.let { forecastAdapter.setData(it) }
+            forecast?.list?.let { forecastAdapter.setData(it) }
         })
     }
 }

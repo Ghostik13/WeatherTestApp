@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import com.example.weathertestapp.*
 import com.example.weathertestapp.databinding.FragmentCurrentWeatherBinding
 import com.example.weathertestapp.ui.presentation.MainViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CurrentWeatherFragment : Fragment() {
@@ -24,7 +26,7 @@ class CurrentWeatherFragment : Fragment() {
     ): View {
         _binding = FragmentCurrentWeatherBinding.inflate(inflater, container, false)
         val view = binding.root
-        initWeather(binding)
+        initWeather()
         initShare(binding)
         return view
     }
@@ -39,33 +41,37 @@ class CurrentWeatherFragment : Fragment() {
         }
     }
 
-    private fun initWeather(view: FragmentCurrentWeatherBinding) {
+    private fun initWeather() {
         viewModel.loading.observe(viewLifecycleOwner, {
-            if (it == false) {
-                view.pb.visibility = View.VISIBLE
+            binding.pb.visibility = if (it == false) {
+                View.VISIBLE
             } else {
-                view.pb.visibility = View.GONE
+                View.GONE
             }
         })
         viewModel.getCurrentWeatherDb()
         viewModel.city.observe(viewLifecycleOwner, { city ->
-            viewModel.getCurrentWeather(city)
+            GlobalScope.launch { viewModel.getCurrentWeather(city) }
         })
         viewModel.weather.observe(viewLifecycleOwner, {
             it?.let {
-                view.tvTemp.text = getString(R.string.celcius, it.temp.toString())
-                view.tvDesc.text = it.description.firstToUpperCase()
-                view.tvHum.text = getString(R.string.humidity, it.humidity.toString())
-                if (it.rain != null) {
-                    view.tvRain.text = it.rain.toString()
-                } else {
-                    view.tvRain.text = getString(R.string.rain)
+                with(binding) {
+                    tvTemp.text = it.temp
+                    tvDesc.text = it.description.firstToUpperCase()
+                    tvHum.text = getString(R.string.humidity, it.humidity.toString())
                 }
-                view.tvPressure.text = getString(R.string.pressure, it.pressure.toString())
-                view.tvSpeed.text = getString(R.string.speed, it.windSpeed.toString())
-                view.tvDir.text = it.windDirection
-                view.tvCity.text = it.city
-                view.ivWeather.setImageResource(it.icon)
+                if (it.rain != null) {
+                    binding.tvRain.text = it.rain.toString()
+                } else {
+                    binding.tvRain.text = getString(R.string.rain)
+                }
+                with(binding) {
+                    tvPressure.text = getString(R.string.pressure, it.pressure.toString())
+                    tvSpeed.text = it.windSpeed
+                    tvDir.text = it.windDirection
+                    tvCity.text = it.city
+                    ivWeather.setImageResource(it.icon)
+                }
             }
         })
     }
